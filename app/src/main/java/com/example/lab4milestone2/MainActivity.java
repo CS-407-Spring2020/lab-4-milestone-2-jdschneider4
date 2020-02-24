@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startListening();
 
         //may need to go before if statement
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -60,18 +59,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        startListening();
+
         if(Build.VERSION.SDK_INT >= 23 &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location!=null){
-            updateLocationInfo(location);
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                updateLocationInfo(location);
+            }
         }
-
     }
 
     public void updateLocationInfo(Location location){
